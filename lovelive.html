@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<div id="main"></div>
+<style>
+.yes-button {
+  background-color: red;
+  cursor: pointer;
+  padding: 0 5%;
+}
+
+.no-button {
+  background-color: blue;
+  cursor: pointer;
+  padding: 0 5%;
+}
+
+.reset-button {
+  border: 1px solid black;
+  cursor: pointer;
+}
+</style>
+<script>
+function state(img, yes, no) {
+  var ret = {
+    'img' : img,
+    'yes' : yes,
+    'no' : no,
+    'handle' : function(arg) {
+      if (arg) {
+        return this.yes;
+      } else {
+        return this.no;
+      }
+    }
+  };
+  return ret;
+}
+
+var states = [
+  state('img/state/state_1.png', 2, 7),
+  state('img/state/state_2.png', 3, 8),
+  state('img/state/state_3.png', 9, 4),
+  state('img/state/state_4.png', 5, 10),
+  state('img/state/state_5.png', 6, 11),
+  state('img/state/state_6.png', -1, 12),
+  state('img/state/state_7.png', 8, 13),
+  state('img/state/state_8.png', 14, 9),
+  state('img/state/state_9.png', 10, 15),
+  state('img/state/state_10.png', 11, 16),
+  state('img/state/state_11.png', 12, 17),
+  state('img/state/state_12.png', -1, 18),
+  state('img/state/state_13.png', 14, 19),
+  state('img/state/state_14.png', 15, 20),
+  state('img/state/state_15.png', 16, 21),
+  state('img/state/state_16.png', 17, 22),
+  state('img/state/state_17.png', 18, 23),
+  state('img/state/state_18.png', -2, 24),
+  state('img/state/state_19.png', 20, 25),
+  state('img/state/state_20.png', 21, 26),
+  state('img/state/state_21.png', 22, 27),
+  state('img/state/state_22.png', 23, 28),
+  state('img/state/state_23.png', 29, 24),
+  state('img/state/state_24.png', -3, 30),
+  state('img/state/state_25.png', 26, -9),
+  state('img/state/state_26.png', -9, 27),
+  state('img/state/state_27.png', 28, -8),
+  state('img/state/state_28.png', 29, -7),
+  state('img/state/state_29.png', 30, -6),
+  state('img/state/state_30.png', -4, -5)
+];
+
+var results = [
+  'img/result/result_1.png',
+  'img/result/result_2.png',
+  'img/result/result_3.png',
+  'img/result/result_4.png',
+  'img/result/result_5.png',
+  'img/result/result_6.png',
+  'img/result/result_7.png',
+  'img/result/result_8.png',
+  'img/result/result_9.png'
+];
+
+function showState(state) {
+  document.getElementById('main').innerHTML = '<center><img src="' + state.img + '"><br><span class="yes-button" onclick="fsm.transit(true);">Y</span><span class="no-button" onclick="fsm.transit(false);">N</span></center>';
+}
+
+function showResult(result) {
+  document.getElementById('main').innerHTML = '<center><img src="' + result + '"><br><span class="reset-button" onclick="fsm.reset();">もう一回</span></center>'
+}
+
+var fsm = {
+  'state' : states[0],
+  'transit' : function(arg) {
+    var next = this.state.handle(arg);
+    if (next > 0) {
+      this.state = states[next - 1];
+      showState(this.state);
+    } else if (next < 0) {
+      showResult(results[-next - 1]);
+    }
+  },
+  'reset' : function() {
+    this.state = states[0];
+    showState(this.state);
+  }
+};
+
+fsm.reset();
+</script>
+</body>
+</html>
